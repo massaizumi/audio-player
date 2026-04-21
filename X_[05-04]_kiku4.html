@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X_[05-04]_kiku4</title>
+<style>
+  body { font-family: "Hiragino Sans", "Noto Sans JP", sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; background: #fafaf8; color: #1a1a18; }
+  h1 { font-size: 1rem; font-weight: 500; color: #888; margin-bottom: 1.5rem; }
+  .player { background: #f0eefc; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 12px; }
+  audio { width: 100%; }
+  .script { background: #fff; border: 1px solid #e8e6f0; border-radius: 12px; overflow: hidden; }
+  .line { padding: 11px 1.25rem; font-size: 1rem; line-height: 1.8; border-bottom: 1px solid #f0eef8; color: #555; transition: background 0.15s; cursor: pointer; }
+  .line:last-child { border-bottom: none; }
+  .line.active { background: #eeedfe; color: #3c3489; font-weight: 500; border-left: 3px solid #7f77dd; padding-left: calc(1.25rem - 3px); }
+  .line:hover { background: #f7f6ff; }
+</style>
+</head>
+<body>
+<h1>X_[05-04]_kiku4</h1>
+<div class="player">
+  <audio id="audio" controls src="X_[05-04]_kiku4.mp3"></audio>
+</div>
+<div class="script" id="script">
+    <div class="line" data-start="0.0" data-end="5.0">4佐々木さんは?</div>
+    <div class="line" data-start="5.0" data-end="8.0">私は魚が好きです。</div>
+    <div class="line" data-start="8.0" data-end="10.0">野菜も好きです。</div>
+    <div class="line" data-start="10.0" data-end="12.0">肉は?</div>
+    <div class="line" data-start="12.0" data-end="15.0">肉は好きじゃないです。</div>
+</div>
+<script>
+  const audio = document.getElementById('audio');
+  const lines = document.querySelectorAll('.line');
+
+  lines.forEach(line => {
+    line.addEventListener('click', () => {
+      audio.currentTime = parseFloat(line.dataset.start);
+      audio.play();
+    });
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const t = audio.currentTime;
+    lines.forEach(line => {
+      const s = parseFloat(line.dataset.start);
+      const e = parseFloat(line.dataset.end);
+      if (t >= s && t < e) {
+        if (!line.classList.contains('active')) {
+          document.querySelectorAll('.line.active').forEach(l => l.classList.remove('active'));
+          line.classList.add('active');
+          line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
